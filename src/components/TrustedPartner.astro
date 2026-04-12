@@ -1,0 +1,68 @@
+---
+// src/components/TrustedPartner.astro
+---
+
+<section class="py-16 md:py-24 bg-white  w-full">
+    <div class="container mx-auto px-4 md:px-8 max-w-7xl">
+        <div class="flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
+            
+            <div class="w-full lg:w-1/2 flex flex-col">
+                <span class="text-[#13522B]  text-sm md:text-base tracking-widest uppercase mb-4">
+                    Votre partenaire de confiance
+                </span>
+                
+                <h2 class="text-3xl md:text-4xl lg:text-5xl  text-[#333333] leading-tight mb-6">
+                    Votre partenaire en <br class="hidden lg:block"/>
+                    solutions <span class="text-[#13522B]">d'emballage</span>
+                </h2>
+                
+                <p class="text-[#333333] opacity-80 text-lg mb-10 max-w-xl leading-relaxed">
+                    Maxevo est née d’une ambition simple : offrir aux professionnels de la restauration des solutions d’emballage alimentaire à la hauteur de leurs exigences, alliant qualité, praticité et raffinement.
+                </p>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6 mb-8">
+                    
+                    <div class="bg-white p-6 rounded-2xl shadow-sm flex flex-col gap-3">
+                        <svg class="w-8 h-8 text-[#13522B]" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                        </svg>
+                        <h3 class="font-bold text-[#333333] text-lg">Qualité supérieure</h3>
+                        <p class="text-sm text-[#333333] opacity-70 leading-snug">Sélectionnés avec rigueur pour garantir fiabilité et sécurité.</p>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-2xl shadow-sm flex flex-col gap-3">
+                        <svg class="w-8 h-8 text-[#13522B]" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                        </svg>
+                        <h3 class="font-bold text-[#333333] text-lg">Prix compétitifs</h3>
+                        <p class="text-sm text-[#333333] opacity-70 leading-snug">Le meilleur rapport qualité-prix pour répondre à vos besoins.</p>
+                    </div>
+
+                </div>
+
+                <div class="flex items-start gap-4">
+                    <svg class="w-8 h-8 text-[#13522B] shrink-0 mt-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+                    </svg>
+                    <div>
+                        <h3 class="font-bold text-[#333333] text-lg mb-1">Rapidité et réactivité</h3>
+                        <p class="text-sm text-[#333333] opacity-70 leading-relaxed">Livraison rapide et service client efficace pour un partenariat sans souci.</p>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="w-full lg:w-1/2">
+                <div class="relative rounded-[2rem] overflow-hidden shadow-2xl bg-[#333333] aspect-[4/3] lg:aspect-square flex items-center justify-center">
+                    <img 
+                        src="/votre-partenaire-image.jpg" 
+                        alt="Matériel d'emballage Maxevo" 
+                        class="absolute inset-0 w-full h-full object-cover opacity-90"
+                    />
+                    <div class="absolute inset-0 bg-gradient-to-tr from-black/20 to-transparent"></div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>

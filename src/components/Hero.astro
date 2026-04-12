@@ -1,0 +1,72 @@
+---
+interface Props {
+    title: string;
+    description: string;
+    primaryBtnText?: string;
+    primaryBtnLink?: string;
+    secondaryBtnText?: string;
+    secondaryBtnLink?: string;
+    bgImage?: string;
+}
+
+const {
+    title,
+    description,
+    primaryBtnText,
+    primaryBtnLink,
+    secondaryBtnText,
+    secondaryBtnLink,
+    bgImage = "/hero-bg.jpg"
+} = Astro.props;
+---
+
+<div class="p-4 md:p-6 lg:p-2 w-full bg-white  min-h-[90vh] flex flex-col">
+    
+    <section class="relative w-full flex-grow rounded-[2rem] overflow-hidden flex flex-col justify-end p-8 md:p-16 lg:p-24 shadow-2xl">
+        
+        <div class="absolute inset-0 z-0">
+            <img 
+                src={bgImage} 
+                alt="Background" 
+                class="w-full h-full object-cover object-center"
+            />
+            <div class="absolute inset-0 bg-gradient-to-t from-maxevo-dark/95 via-maxevo-dark/60 to-transparent"></div>
+        </div>
+
+        <div class="relative z-10 max-w-4xl">
+            <h1 class="text-white text-5xl md:text-6xl lg:text-7xl scale-y-110 tracking-wide leading-[1.05] mb-6">
+                {title}
+            </h1>
+            
+            <p class="text-gray-200 text-lg md:text-xl lg:text-xl max-w-2xl font-light mb-10 leading-relaxed">
+                {description}
+            </p>
+
+            <div class="flex flex-wrap items-center gap-4">
+                {primaryBtnText && primaryBtnLink && (
+                    <a 
+                        href={primaryBtnLink} 
+                        class="bg-transparent border  text-white px-8 py-4 rounded-xl font-medium  transition-colors flex items-center gap-3 group"
+                    >
+                        {primaryBtnText}
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 group-hover:translate-x-1 transition-transform" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+                        </svg>
+                    </a>
+                )}
+                
+                {secondaryBtnText && secondaryBtnLink && (
+                    <a 
+                        href={secondaryBtnLink} 
+                        class="bg-maxevo-orange text-white px-8 py-4 rounded-xl font-medium hover:bg-[#cc5d1b] transition-colors flex items-center gap-3 group"
+                    >
+                        {secondaryBtnText}
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 group-hover:translate-x-1 transition-transform" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+                        </svg>
+                    </a>
+                )}
+            </div>
+        </div>
+    </section>
+</div>

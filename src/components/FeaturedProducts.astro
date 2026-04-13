@@ -2,26 +2,66 @@
 // src/components/FeaturedProducts.astro
 
 const products = [
-    { name: "Gobelets en carton kraft", category: "Boissons", desc: "Pour café et boissons chaudes", image: "/images/products/gobelet-kraft.jpg" },
-    { name: "Gobelets en plastique clair", category: "Boissons", desc: "Adaptés aux boissons froides", image: "/images/products/gobelet-plastique.jpg" },
-    { name: "Pots à glace avec couvercle", category: "Desserts", desc: "Préservation de la fraîcheur", image: "/images/products/pot-glace.jpg" },
-    { name: "Assiettes biodégradables", category: "Assiettes", desc: "Résistantes et élégantes", image: "/images/products/assiettes.jpg" },
-    { name: "Couverts en bois", category: "Couverts", desc: "Ergonomiques et durables", image: "/images/products/couverts.jpg" },
-    { name: "Boîtes à salade transparentes", category: "Salades", desc: "Pour une présentation parfaite", image: "/images/products/salade-claire.jpg" },
-    { name: "Boîtes à salade kraft", category: "Salades", desc: "Solides et pratiques", image: "/images/products/salade-kraft.jpg" },
-    { name: "Boîtes à gâteau pâtissières", category: "Pâtisserie", desc: "Protectrices et haut de gamme", image: "/images/products/boite-gateau.jpg" },
-    { name: "Pots à sauce hermétiques", category: "Sauces", desc: "Préserve la saveur", image: "/images/products/pot-sauce.jpg" },
-    { name: "Boîtes à pâtes rondes", category: "Plats chauds", desc: "Faciles à transporter", image: "/images/products/boite-pates.jpg" },
-    { name: "Emballages pour sandwichs", category: "Snacking", desc: "Présentation professionnelle", image: "/images/products/wrap-sandwich.jpg" },
-    { name: "Pots pour frites", category: "Snacking", desc: "Confort de service garanti", image: "/images/products/pot-frites.jpg" },
-    { name: "Boîtes thermorésistantes", category: "Plats chauds", desc: "Pour plats à emporter", image: "/images/products/boite-thermo.jpg" },
-    { name: "Barquettes en aluminium", category: "Cuisson", desc: "Légères et robustes", image: "/images/products/barquette-alu.jpg" },
-    { name: "Boîtes kraft rectangulaires", category: "Général", desc: "Respect de l’environnement", image: "/images/products/boite-rectangulaire.jpg" },
-    { name: "Couvercles dômes", category: "Accessoires", desc: "Pour gobelets et pots à glace", image: "/images/products/couvercle-dome.jpg" },
-    { name: "Couvercles plats", category: "Accessoires", desc: "Fermeture sécurisée", image: "/images/products/couvercle-plat.jpg" },
-    { name: "Pailles en papier", category: "Accessoires", desc: "Pratiques et hygiéniques", image: "/images/products/pailles.jpg" },
-    { name: "Serviettes jetables premium", category: "Hygiène", desc: "Esthétiques et fonctionnelles", image: "/images/products/serviettes.jpg" },
-    { name: "Sachets alimentaires kraft", category: "Transport", desc: "Emporter avec élégance", image: "/images/products/sachet-kraft.jpg" }
+    { 
+        name: "Cures-dents individuels", 
+        category: "Hygiène", 
+        desc: "Palillos ronds à double pointe, emballés individuellement.", 
+        image: "/products/1.jpg" 
+    },
+    { 
+        name: "Bol en kraft naturel", 
+        category: "Contenants", 
+        desc: "Format moyen pour salades ou accompagnements.", 
+        image: "/products/2.jpg" 
+    },
+    { 
+        name: "Pot à soupe avec couvercle", 
+        category: "Plats chauds", 
+        desc: "Design hermétique avec trous d'aération pour la vapeur.", 
+        image: "/products/3.jpg" 
+    },
+    { 
+        name: "Étui sandwich triangulaire", 
+        category: "Snacking", 
+        desc: "Fenêtre transparente pour une visibilité optimale.", 
+        image: "/products/4.jpg" 
+    },
+    { 
+        name: "Boîte Click-Lock Kraft", 
+        category: "Take-away", 
+        desc: "Fermeture sécurisée pour plats cuisinés.", 
+        image: "/products/5.jpg" 
+    },
+    { 
+        name: "Porte-gobelets 4 cavités", 
+        category: "Accessoires", 
+        desc: "Fibre moulée robuste pour un transport stable.", 
+        image: "/products/6.jpg" 
+    },
+    { 
+        name: "Sachet kraft plat", 
+        category: "Boulangerie", 
+        desc: "Idéal pour viennoiseries et produits secs.", 
+        image: "/products/7.jpg" 
+    },
+    { 
+        name: "Gobelet avec bague isolante", 
+        category: "Boissons", 
+        desc: "Protection thermique pour boissons très chaudes.", 
+        image: "/products/8.jpg" 
+    },
+    { 
+        name: "Couvercle biodégradable", 
+        category: "Accessoires", 
+        desc: "Fermeture écologique pour bols et contenants ronds.", 
+        image: "/products/9.jpg" 
+    },
+    { 
+        name: "Barquette ouverte en carton", 
+        category: "Snacking", 
+        desc: "Parfaite pour frites, nuggets ou street food.", 
+        image: "/products/10.jpg" 
+    }
 ];
 ---
 
@@ -38,7 +78,7 @@ const products = [
                 </p>
             </div>
             
-            <a href="/produits" class="bg-[#E86B21] text-white px-8 py-4 rounded-xl font-medium hover:bg-[#d15f1c] transition-colors flex items-center gap-3 group shadow-lg shrink-0">
+            <a href="/#products" class="bg-[#E86B21] text-white px-8 py-4 rounded-xl font-medium hover:bg-[#d15f1c] transition-colors flex items-center gap-3 group shadow-lg shrink-0">
                 Découvrir tout le catalogue
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 group-hover:translate-x-1 transition-transform" viewBox="0 0 20 20" fill="currentColor">
                     <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />

@@ -2,66 +2,16 @@
 // src/components/FeaturedProducts.astro
 
 const products = [
-    { 
-        name: "Cures-dents individuels", 
-        category: "Hygiène", 
-        desc: "Palillos ronds à double pointe, emballés individuellement.", 
-        image: "/products/1.jpg" 
-    },
-    { 
-        name: "Bol en kraft naturel", 
-        category: "Contenants", 
-        desc: "Format moyen pour salades ou accompagnements.", 
-        image: "/products/2.jpg" 
-    },
-    { 
-        name: "Pot à soupe avec couvercle", 
-        category: "Plats chauds", 
-        desc: "Design hermétique avec trous d'aération pour la vapeur.", 
-        image: "/products/3.jpg" 
-    },
-    { 
-        name: "Étui sandwich triangulaire", 
-        category: "Snacking", 
-        desc: "Fenêtre transparente pour une visibilité optimale.", 
-        image: "/products/4.jpg" 
-    },
-    { 
-        name: "Boîte Click-Lock Kraft", 
-        category: "Take-away", 
-        desc: "Fermeture sécurisée pour plats cuisinés.", 
-        image: "/products/5.jpg" 
-    },
-    { 
-        name: "Porte-gobelets 4 cavités", 
-        category: "Accessoires", 
-        desc: "Fibre moulée robuste pour un transport stable.", 
-        image: "/products/6.jpg" 
-    },
-    { 
-        name: "Sachet kraft plat", 
-        category: "Boulangerie", 
-        desc: "Idéal pour viennoiseries et produits secs.", 
-        image: "/products/7.jpg" 
-    },
-    { 
-        name: "Gobelet avec bague isolante", 
-        category: "Boissons", 
-        desc: "Protection thermique pour boissons très chaudes.", 
-        image: "/products/8.jpg" 
-    },
-    { 
-        name: "Couvercle biodégradable", 
-        category: "Accessoires", 
-        desc: "Fermeture écologique pour bols et contenants ronds.", 
-        image: "/products/9.jpg" 
-    },
-    { 
-        name: "Barquette ouverte en carton", 
-        category: "Snacking", 
-        desc: "Parfaite pour frites, nuggets ou street food.", 
-        image: "/products/10.jpg" 
-    }
+    { slug: "pique-bambou-golf", category: "Accessoires", name: "Pique bambou golf", desc: "Un indispensable pour un service propre et professionnel.", image: "/products/1.jpg" },
+    { slug: "pot-wraps-frites-kraft", category: "Snacking", name: "Pot à wraps / frites kraft", desc: "Solutions pratiques pour la restauration rapide.", image: "/products/2.jpg" },
+    { slug: "pot-kraft-6oz", category: "Sauces", name: "Pot kraft", desc: "Parfaits pour sauces, soupes et accompagnements.", image: "/products/3.jpg" },
+    { slug: "bqt-sushi-kraft", category: "Sushi", name: "Bqt sushi kraft", desc: "Emballages élégants conçus pour les sushis.", image: "/products/4.jpg" },
+    { slug: "bol-bagasse", category: "Plats chauds", name: "Bol bagasse", desc: "Bol écologiques adaptées aux plats chauds.", image: "/products/5.jpg" },
+    { slug: "bqt-octogonal", category: "Plats chauds", name: "Bqt octogonal", desc: "Emballages élégants et robustes pour une présentation soignée.", image: "/products/6.jpg" },
+    { slug: "barquette-bois", category: "Snacking", name: "Barquette bois", desc: "Présentation naturelle idéale pour snacks et finger food.", image: "/products/7.jpg" },
+    { slug: "gobelet-carton", category: "Boissons", name: "Gobelet carton", desc: "Gobelets de qualité pour boissons chaudes et froides.", image: "/products/8.jpg" },
+    { slug: "boite-sandwich", category: "Snacking", name: "Boîte Sandwich", desc: "Des emballages solides et pratiques pour une présentation nette.", image: "/products/9.jpg" },
+    { slug: "assiette-ronde-bagasse", category: "Assiettes", name: "Assiette ronde bagasse", desc: "Assiette ronde écologique fabriquée à partir de fibres de bagasse.", image: "/products/10.jpg" }
 ];
 ---
 
@@ -78,7 +28,7 @@ const products = [
                 </p>
             </div>
             
-            <a href="/#products" class="bg-[#E86B21] text-white px-8 py-4 rounded-xl font-medium hover:bg-[#d15f1c] transition-colors flex items-center gap-3 group shadow-lg shrink-0">
+            <a href="/produits" class="bg-[#E86B21] text-white px-8 py-4 rounded-xl font-medium hover:bg-[#d15f1c] transition-colors flex items-center gap-3 group shadow-lg shrink-0">
                 Découvrir tout le catalogue
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 group-hover:translate-x-1 transition-transform" viewBox="0 0 20 20" fill="currentColor">
                     <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
@@ -92,7 +42,7 @@ const products = [
                 class="flex gap-6 overflow-x-auto hide-scrollbar snap-x snap-mandatory cursor-grab active:cursor-grabbing pb-8"
             >
                 {products.map((product) => (
-                    <div class="product-card shrink-0 w-[280px] sm:w-[320px] snap-start flex flex-col select-none group">
+                    <a href={`/produits/${product.slug}`} class="product-card block shrink-0 w-[280px] sm:w-[320px] snap-start select-none group focus:outline-none">
                         <div class="w-full aspect-[4/5] bg-[#F9F9F9] rounded-xl mb-4 overflow-hidden border border-gray-100 transition-colors pointer-events-none">
                             <img 
                                 src={product.image} 
@@ -101,10 +51,10 @@ const products = [
                                 loading="lazy"
                             />
                         </div>
-                        <span class="text-xs text-[#333333] opacity-50 uppercase tracking-widest mb-1">{product.category}</span>
-                        <h3 class="text-xl font-normal text-[#333333] mb-1">{product.name}</h3>
-                        <p class="text-sm font-light text-[#333333] opacity-60">{product.desc}</p>
-                    </div>
+                        <span class="text-xs text-[#333333] opacity-50 uppercase tracking-widest mb-1 block">{product.category}</span>
+                        <h3 class="text-xl font-normal text-[#333333] mb-1 group-hover:text-[#E86B21] transition-colors">{product.name}</h3>
+                        <p class="text-sm font-light text-[#333333] opacity-60 line-clamp-2">{product.desc}</p>
+                    </a>
                 ))}
             </div>
         </div>
@@ -131,14 +81,12 @@ const products = [
         let startX: number;
         let scrollLeft: number;
         let autoPlayInterval: number;
+        let isDragging = false; 
 
         const stopAutoPlay = () => {
-            if (autoPlayInterval) {
-                clearInterval(autoPlayInterval);
-            }
+            if (autoPlayInterval) clearInterval(autoPlayInterval);
         };
 
-        // Fixed the interval stacking bug by clearing it first
         const startAutoPlay = () => {
             stopAutoPlay(); 
             autoPlayInterval = window.setInterval(() => {
@@ -155,6 +103,7 @@ const products = [
 
         slider.addEventListener('mousedown', (e) => {
             isDown = true;
+            isDragging = false;
             startX = e.pageX - slider.offsetLeft;
             scrollLeft = slider.scrollLeft;
             stopAutoPlay();
@@ -173,9 +122,19 @@ const products = [
         slider.addEventListener('mousemove', (e) => {
             if (!isDown) return;
             e.preventDefault();
+            isDragging = true;
             const x = e.pageX - slider.offsetLeft;
             const walk = (x - startX) * 2; 
             slider.scrollLeft = scrollLeft - walk;
+        });
+
+        const links = slider.querySelectorAll('a.product-card');
+        links.forEach(link => {
+            link.addEventListener('click', (e) => {
+                if (isDragging) {
+                    e.preventDefault();
+                }
+            });
         });
 
         slider.addEventListener('touchstart', stopAutoPlay, { passive: true });

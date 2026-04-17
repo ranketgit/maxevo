@@ -2,39 +2,33 @@
 // src/components/Sectors.astro
 ---
 
-<section class="py-12  bg-white w-full">
+<section class="py-12 bg-white w-full">
     <div class="container mx-auto px-4 md:px-8 max-w-7xl">
         
         <div class="mb-12">
-            <h2 class="text-3xl md:text-4xl text-[#333333]  mb-2">
+            <h2 class="text-3xl md:text-4xl text-[#333333] mb-2">
                 Vos solutions d'emballage <br class="hidden sm:block" /> par secteur
-               
             </h2>
         </div>
 
         <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-2 sm:gap-4">
             
-            <a href="/secteurs/boucherie" class="flex flex-col items-center justify-center text-center p-6 rounded-2xl bg-[#13522B] text-white hover:opacity-90 transition-opacity aspect-square">
+            <a href="/secteurs/cafe-restaurant" class="flex flex-col items-center justify-center text-center p-6 rounded-2xl bg-[#13522B] text-white hover:opacity-90 transition-opacity aspect-square">
                 <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="w-16 h-16 mb-4">
-                    <path d="M12 32h-6"/>
-                    <path d="M12 30c0 0 4-8 20-8s20 8 20 8c0 0 4 14-10 18s-20-4-30-18z"/>
-                    <path d="M22 24v14M32 22v18M42 24v14"/>
-                    <path d="M52 30l8-4v14l-8-4"/>
-                    <path d="M55 28v10M58 27v12"/>
+                    <path d="M20 24h20v14c0 5.5-4.5 10-10 10s-10-4.5-10-10V24z"/>
+                    <path d="M40 28h4c3.3 0 6 2.7 6 6s-2.7 6-6 6h-4"/>
+                    <path d="M12 52h36"/>
                 </svg>
-                <span class="text-sm md:text-base font-bold leading-snug">Boucher<br>Charcutier<br>Traiteur</span>
+                <span class="text-sm md:text-base font-bold leading-snug">Café /<br>Restaurant</span>
             </a>
 
-            <a href="/secteurs/fromager" class="flex flex-col items-center justify-center text-center p-6 rounded-2xl bg-[#D82F23] text-white hover:opacity-90 transition-opacity aspect-square">
+            <a href="/secteurs/ecologique" class="flex flex-col items-center justify-center text-center p-6 rounded-2xl bg-[#D82F23] text-white hover:opacity-90 transition-opacity aspect-square">
                 <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="w-16 h-16 mb-4">
-                    <path d="M14 48l-2-18 36-12 6 28-40 2z"/>
-                    <path d="M12 30c0 0 10 4 36-2"/>
-                    <circle cx="24" cy="40" r="3"/>
-                    <circle cx="36" cy="36" r="2"/>
-                    <circle cx="44" cy="42" r="2.5"/>
-                    <circle cx="28" cy="32" r="1.5"/>
+                    <path d="M32 12C20 12 12 20 12 32c0 16 20 20 20 20s20-4 20-20c0-12-8-20-20-20z"/>
+                    <path d="M32 52V24"/>
+                    <path d="M32 36l8-8"/>
                 </svg>
-                <span class="text-sm md:text-base font-bold leading-snug">Fromager</span>
+                <span class="text-sm md:text-base font-bold leading-snug">Emballage<br>écologique</span>
             </a>
 
             <a href="/secteurs/boulangerie" class="flex flex-col items-center justify-center text-center p-6 rounded-2xl bg-[#E86B21] text-white hover:opacity-90 transition-opacity aspect-square">
@@ -45,22 +39,15 @@
                     <path d="M22 44c4-2 10 2 20-2"/>
                     <circle cx="28" cy="18" r="1.5"/>
                 </svg>
-                <span class="text-sm md:text-base font-bold leading-snug">Boulanger<br>Pâtissier</span>
+                <span class="text-sm md:text-base font-bold leading-snug">Pâtisserie /<br>Boulangerie</span>
             </a>
 
-            <a href="/secteurs/epicerie" class="flex flex-col items-center justify-center text-center p-6 rounded-2xl bg-[#6B9E78] text-white hover:opacity-90 transition-opacity aspect-square">
+            <a href="/secteurs/e-commerce" class="flex flex-col items-center justify-center text-center p-6 rounded-2xl bg-[#6B9E78] text-white hover:opacity-90 transition-opacity aspect-square">
                 <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="w-16 h-16 mb-4">
-                    <path d="M10 28l4-14h36l4 14"/>
-                    <path d="M10 28h44v4H10z"/>
-                    <path d="M18 14l-2 14M26 14l-1 14M34 14v14M42 14l1 14M50 14l2 14"/>
-                    <path d="M14 32v20h36V32"/>
-                    <circle cx="18" cy="55" r="2.5"/>
-                    <circle cx="46" cy="55" r="2.5"/>
-                    <path d="M20 42h10"/>
-                    <path d="M40 40c-2 0-2 4 0 4s2-4 0-4z"/>
-                    <path d="M18 48h28"/>
+                    <path d="M14 20l6 24h24l6-24H14z"/>
+                    <path d="M24 20v-4c0-4.4 3.6-8 8-8s8 3.6 8 8v4"/>
                 </svg>
-                <span class="text-sm md:text-base font-bold leading-snug">Épiceries<br>Restaurateurs</span>
+                <span class="text-sm md:text-base font-bold leading-snug">E-commerce</span>
             </a>
 
             <a href="/secteurs/street-food" class="flex flex-col items-center justify-center text-center p-6 rounded-2xl bg-[#F5F5F5] text-[#333333] hover:opacity-90 transition-opacity aspect-square">
@@ -74,19 +61,16 @@
                     <circle cx="30" cy="32" r="1.5"/>
                     <path d="M54 36v16l2 2"/>
                 </svg>
-                <span class="text-sm md:text-base font-bold leading-snug">Street<br>Food</span>
+                <span class="text-sm md:text-base font-bold leading-snug">Fast-food /<br>Street food</span>
             </a>
 
-            <a href="/secteurs/autres" class="flex flex-col items-center justify-center text-center p-6 rounded-2xl bg-[#333333] text-white hover:opacity-90 transition-opacity aspect-square">
+            <a href="/secteurs/boissons" class="flex flex-col items-center justify-center text-center p-6 rounded-2xl bg-[#333333] text-white hover:opacity-90 transition-opacity aspect-square">
                 <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="w-16 h-16 mb-4">
-                    <path d="M16 32v20h32V32"/>
-                    <path d="M12 32l4-12h32l4 12"/>
-                    <path d="M12 32c0 2.2 1.8 4 4 4s4-1.8 4-4 1.8 4 4 4 4-1.8 4-4 1.8 4 4 4 4-1.8 4-4 1.8 4 4 4 4-1.8 4-4"/>
-                    <path d="M20 20l-2 12M28 20l-1 12M36 20v12M44 20l1 12M52 20l2 12"/>
-                    <path d="M38 40h10v12H38z"/>
-                    <circle cx="43" cy="45" r="2.5"/>
+                    <path d="M22 24l2 24h16l2-24H22z"/>
+                    <path d="M18 24h28"/>
+                    <path d="M32 24V10l8-8"/>
                 </svg>
-                <span class="text-sm md:text-base font-bold leading-snug">Autres<br>commerces</span>
+                <span class="text-sm md:text-base font-bold leading-snug">Boissons<br>& Jus</span>
             </a>
 
         </div>

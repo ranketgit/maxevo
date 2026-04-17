@@ -1,5 +1,38 @@
 ---
 // src/components/Header.astro
+
+const sectors = [
+    {
+        name: "Café / Restaurant",
+        href: "/secteurs/cafe-restaurant",
+        svg: '<path d="M20 24h20v14c0 5.5-4.5 10-10 10s-10-4.5-10-10V24z"/><path d="M40 28h4c3.3 0 6 2.7 6 6s-2.7 6-6 6h-4"/><path d="M12 52h36"/>'
+    },
+    {
+        name: "Emballage écologique",
+        href: "/secteurs/ecologique",
+        svg: '<path d="M32 12C20 12 12 20 12 32c0 16 20 20 20 20s20-4 20-20c0-12-8-20-20-20z"/><path d="M32 52V24"/><path d="M32 36l8-8"/>'
+    },
+    {
+        name: "Pâtisserie / Boulangerie",
+        href: "/secteurs/boulangerie",
+        svg: '<rect x="22" y="12" width="20" height="40" rx="8"/><path d="M22 24c4-2 10 2 20-2"/><path d="M22 34c4-2 10 2 20-2"/><path d="M22 44c4-2 10 2 20-2"/><circle cx="28" cy="18" r="1.5"/>'
+    },
+    {
+        name: "E-commerce",
+        href: "/secteurs/e-commerce",
+        svg: '<path d="M14 20l6 24h24l6-24H14z"/><path d="M24 20v-4c0-4.4 3.6-8 8-8s8 3.6 8 8v4"/>'
+    },
+    {
+        name: "Fast-food / Street food",
+        href: "/secteurs/street-food",
+        svg: '<path d="M12 36c0-12 8-20 20-20s20 8 20 20H12z"/><path d="M14 36v12c0 4 4 6 18 6s18-2 18-6V36"/><path d="M20 44h24v6H20z"/><circle cx="26" cy="24" r="1.5"/><circle cx="36" cy="22" r="1.5"/><circle cx="44" cy="30" r="1.5"/><circle cx="30" cy="32" r="1.5"/><path d="M54 36v16l2 2"/>'
+    },
+    {
+        name: "Boissons & Jus",
+        href: "/secteurs/boissons",
+        svg: '<path d="M22 24l2 24h16l2-24H22z"/><path d="M18 24h28"/><path d="M32 24V10l8-8"/>'
+    }
+];
 ---
 
 <header id="main-header" class="fixed top-0 w-full z-50 transition-all duration-300 bg-transparent border-b border-transparent">
@@ -10,8 +43,30 @@
         </a>
 
         <nav class="hidden md:flex items-center gap-8">
-            <a href="/" class="nav-link text-white hover:text-[#E86B21] text-sm font-medium transition-colors duration-300">Acceuil</a>
+            <a href="/" class="nav-link text-white hover:text-[#E86B21] text-sm font-medium transition-colors duration-300">Accueil</a>
             <a href="/#produits" class="nav-link text-white hover:text-[#E86B21] text-sm font-medium transition-colors duration-300">Nos Produits</a>
+            
+            <div class="relative group py-6 cursor-pointer">
+                <button class="nav-link text-white hover:text-[#E86B21] text-sm font-medium transition-colors duration-300 flex items-center gap-1 focus:outline-none">
+                    Secteurs
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 opacity-70 group-hover:rotate-180 transition-transform duration-300" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                    </svg>
+                </button>
+                <div class="absolute top-[70px] left-1/2 -translate-x-1/2 w-[280px] bg-white rounded-2xl shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 border border-gray-100 flex flex-col overflow-hidden py-2">
+                    {sectors.map((sector) => (
+                        <a href={sector.href} class="flex items-center gap-3 px-5 py-3 hover:bg-[#F9F9F9] transition-colors group/item">
+                            <div class="text-[#13522B] group-hover/item:text-[#E86B21] transition-colors">
+                                <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6">
+                                    <Fragment set:html={sector.svg} />
+                                </svg>
+                            </div>
+                            <span class="text-sm text-[#333333] font-medium">{sector.name}</span>
+                        </a>
+                    ))}
+                </div>
+            </div>
+
             <a href="/a-propos" class="nav-link text-white hover:text-[#E86B21] text-sm font-medium transition-colors duration-300">À propos</a>
         </nav>
 
@@ -28,10 +83,39 @@
         </button>
     </div>
 
-    <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-gray-100 absolute w-full left-0 top-20 shadow-2xl">
-        <nav class="flex flex-col px-6 py-6 gap-6">
-            <a href="/#produits" class="text-[#333333] hover:text-[#13522B] text-lg font-medium transition-colors">Nos Produits</a>
-            <a href="/a-propos" class="text-[#333333] hover:text-[#13522B] text-lg font-medium transition-colors">À propos</a>
+    <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-gray-100 absolute w-full left-0 top-20 shadow-2xl h-[calc(100vh-80px)] overflow-y-auto">
+        <nav class="flex flex-col px-6 py-6 pb-24 gap-4">
+            <a href="/" class="text-[#333333] hover:text-[#13522B] text-lg font-medium transition-colors py-2">Accueil</a>
+            <a href="/#produits" class="text-[#333333] hover:text-[#13522B] text-lg font-medium transition-colors py-2">Nos Produits</a>
+            
+            <div class="flex flex-col border-y border-gray-100 my-2">
+                <button id="mobile-secteurs-btn" class="flex items-center justify-between py-4 text-[#333333] hover:text-[#13522B] text-lg font-medium transition-colors w-full text-left focus:outline-none">
+                    Secteurs
+                    <svg id="mobile-secteurs-icon" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                    </svg>
+                </button>
+                
+                <div id="mobile-secteurs-menu" class="hidden flex-col bg-[#F9F9F9] rounded-2xl overflow-hidden mb-4 border border-gray-100">
+                    {sectors.map((sector) => (
+                        <a href={sector.href} class="flex items-center justify-between p-4 border-b border-gray-200 last:border-none active:bg-gray-100 transition-colors">
+                            <div class="flex items-center gap-4">
+                                <div class="text-[#13522B] bg-white p-2 rounded-xl shadow-sm">
+                                    <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6">
+                                        <Fragment set:html={sector.svg} />
+                                    </svg>
+                                </div>
+                                <span class="text-base text-[#333333] font-medium">{sector.name}</span>
+                            </div>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+                            </svg>
+                        </a>
+                    ))}
+                </div>
+            </div>
+
+            <a href="/a-propos" class="text-[#333333] hover:text-[#13522B] text-lg font-medium transition-colors py-2">À propos</a>
             <a href="/contact" class="bg-[#E86B21] text-white px-6 py-4 rounded-xl text-center text-base font-medium mt-4 shadow-lg active:scale-95 transition-transform">
                 Contact
             </a>
@@ -40,7 +124,6 @@
 </header>
 
 <style>
-    /* Scrolled State Styles */
     #main-header.scrolled {
         background-color: white;
         box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
@@ -65,6 +148,11 @@
         const header = document.getElementById('main-header');
         const btn = document.getElementById('mobile-menu-btn');
         const menu = document.getElementById('mobile-menu');
+        
+        // Mobile Secteurs Dropdown logic
+        const secteursBtn = document.getElementById('mobile-secteurs-btn');
+        const secteursMenu = document.getElementById('mobile-secteurs-menu');
+        const secteursIcon = document.getElementById('mobile-secteurs-icon');
 
         const handleScroll = () => {
             if (window.scrollY > 50) {
@@ -79,10 +167,14 @@
         window.addEventListener('scroll', handleScroll);
         handleScroll();
 
+        // Toggle main mobile menu
         if (btn && menu) {
             btn.addEventListener('click', (e) => {
                 e.stopPropagation();
                 menu.classList.toggle('hidden');
+                
+                // Lock body scroll when menu is open
+                document.body.style.overflow = menu.classList.contains('hidden') ? 'auto' : 'hidden';
                 
                 const svg = btn.querySelector('svg');
                 if (menu.classList.contains('hidden')) {
@@ -94,13 +186,26 @@
                 }
             });
 
+            // Close menu if clicked outside
             document.addEventListener('click', (e) => {
-                if (!menu.classList.contains('hidden') && !menu.contains(e.target) && !btn.contains(e.target)) {
+                const target = e.target as Node;
+                if (!menu.classList.contains('hidden') && !menu.contains(target) && !btn.contains(target)) {
                     menu.classList.add('hidden');
+                    document.body.style.overflow = 'auto'; // Unlock scroll
                     const svg = btn.querySelector('svg');
                     if (svg) svg.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />';
                     handleScroll();
                 }
+            });
+        }
+
+        // Toggle mobile Secteurs accordion
+        if (secteursBtn && secteursMenu && secteursIcon) {
+            secteursBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                secteursMenu.classList.toggle('hidden');
+                secteursMenu.classList.toggle('flex');
+                secteursIcon.classList.toggle('rotate-180');
             });
         }
     });

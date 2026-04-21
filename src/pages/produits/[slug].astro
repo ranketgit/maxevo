@@ -4,19 +4,44 @@ import Layout from '../../layouts/Layout.astro';
 import Header from '../../components/Header.astro';
 
 export async function getStaticPaths() {
-    // This array now perfectly matches FeaturedProducts.astro so there are no 404s
-    const products = [
-        { slug: "pique-bambou-golf", sku: "1010342", name: "Pique bambou golf", miniDesc: "Un indispensable pour un service propre et professionnel.", fullDesc: "Pique bambou golf 120mm (25*200)", image: "/products/1.jpg", category: "Accessoires" },
-        { slug: "pot-wraps-frites-kraft", sku: "1010516", name: "Pot à wraps / frites kraft", miniDesc: "Solutions pratiques pour la restauration rapide.", fullDesc: "Pot à wraps / frites kraft 12oz (360ml) (20*50)", image: "/products/2.jpg", category: "Snacking" },
-        { slug: "pot-kraft-6oz", sku: "1010449", name: "Pot kraft", miniDesc: "Parfaits pour sauces, soupes et accompagnements, ces pots garantissent praticité et sécurité alimentaire.", fullDesc: "Pot kraft 6oz 180ml (20*50)", image: "/products/3.jpg", category: "Sauces" },
-        { slug: "bqt-sushi-kraft", sku: "1011171", name: "Bqt sushi kraft", miniDesc: "Emballages élégants conçus pour les sushis et produits délicats.", fullDesc: "Bqt sushi kraft 22x14cm (12*25)", image: "/products/4.jpg", category: "Sushi" },
-        { slug: "bol-bagasse", sku: "1010501", name: "Bol bagasse", miniDesc: "Bol écologiques adaptées aux plats chauds.", fullDesc: "Bol bagasse blanc 350ml (12*50)", image: "/products/5.jpg", category: "Plats chauds" },
-        { slug: "bqt-octogonal", sku: "1011167", name: "Bqt octogonal", miniDesc: "Emballages élégants et robustes pour une présentation soignée.", fullDesc: "Bqt octogonal kraft 1000ml (12*25)", image: "/products/6.jpg", category: "Plats chauds" },
-        { slug: "barquette-bois", sku: "1011139", name: "Barquette bois", miniDesc: "Présentation naturelle idéale pour snacks et finger food.", fullDesc: "Barquette bois FSC 170mm (25*500)", image: "/products/7.jpg", category: "Snacking" },
-        { slug: "gobelet-carton", sku: "1011039", name: "Gobelet carton", miniDesc: "Gobelets de qualité pour boissons chaudes et froides.", fullDesc: "Gobelet carton blanc 8oz 240ml 260gsm (20*50)", image: "/products/8.jpg", category: "Boissons" },
-        { slug: "boite-sandwich", sku: "1010488", name: "Boîte Sandwich", miniDesc: "Des emballages solides et pratiques pour une présentation nette et professionnelle.", fullDesc: "Boîte Sandwich kraft triple (10*50)", image: "/products/9.jpg", category: "Snacking" },
-        { slug: "assiette-ronde-bagasse", sku: "1010268", name: "Assiette ronde bagasse", miniDesc: "Assiette ronde écologique fabriquée à partir de fibres de bagasse durables.", fullDesc: "Assiette ronde bagasse blanche 17cm (16*50)", image: "/products/10.jpg", category: "Assiettes" }
-    ];
+    const query = `
+      query GetAllProducts {
+        products(first: 100) {
+          nodes {
+            ... on Product {
+              name
+              slug
+              shortDescription(format: RAW)
+              description(format: RAW)
+              image {
+                sourceUrl
+              }
+              productCategories {
+                nodes {
+                  name
+                }
+              }
+            }
+          }
+        }
+      }
+    `;
+
+    let products = [];
+    try {
+        const response = await fetch("https://maxevopackaging.ma/graphql", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ query }),
+        });
+        
+        const json = await response.json();
+        products = json.data?.products?.nodes || [];
+    } catch (error) {
+        console.error("Erreur GraphQL getStaticPaths:", error);
+    }
 
     return products.map((product) => {
         return {
@@ -27,9 +52,15 @@ export async function getStaticPaths() {
 }
 
 const { product } = Astro.props;
+
+// Variables de secours au cas où un champ serait vide dans WordPress
+const categoryName = product.productCategories?.nodes?.[0]?.name || "Général";
+const imageUrl = product.image?.sourceUrl || "/placeholder.jpg";
+const miniDesc = product.shortDescription || "";
+const fullDesc = product.description || "Détails non spécifiés";
 ---
 
-<Layout title={`${product.name} | MAXEVO PACKAGING`} description={product.miniDesc}>
+<Layout title={`${product.name} | MAXEVO PACKAGING`} description={miniDesc}>
     <Header />
     
     <section class="pt-32 pb-16 md:pt-40 md:pb-24 bg-white w-full min-h-screen">
@@ -47,7 +78,7 @@ const { product } = Astro.props;
                 
                 <div class="w-full aspect-[4/5] md:aspect-square bg-[#F9F9F9] rounded-[2rem] border border-gray-100 overflow-hidden flex items-center justify-center p-8">
                     <img 
-                        src={product.image} 
+                        src={imageUrl} 
                         alt={product.name} 
                         class="w-full h-full object-contain mix-blend-multiply"
                     />
@@ -55,7 +86,7 @@ const { product } = Astro.props;
 
                 <div class="flex flex-col">
                     <span class="text-[#13522B] font-bold text-sm md:text-base tracking-widest uppercase mb-3">
-                        {product.category}
+                        {categoryName}
                     </span>
                     
                     <h1 class="text-3xl md:text-4xl lg:text-5xl font-black text-[#333333] mb-6 tracking-tight leading-tight">
@@ -63,24 +94,20 @@ const { product } = Astro.props;
                     </h1>
                     
                     <p class="text-lg md:text-xl text-[#333333] opacity-80 mb-10 leading-relaxed font-light">
-                        {product.miniDesc}
+                        {miniDesc}
                     </p>
 
                     <div class="bg-[#F9F9F9] rounded-2xl p-6 md:p-8 mb-10 border border-gray-100 shadow-sm">
                         <h3 class="text-lg font-bold text-[#333333] mb-4">Spécifications</h3>
                         <div class="flex flex-col gap-4">
-                            <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center border-b border-gray-200 pb-4 gap-1">
-                                <span class="text-[#333333] opacity-70">Référence (SKU)</span>
-                                <span class="font-mono font-bold text-[#333333] bg-white px-2 py-1 rounded border border-gray-200 text-sm w-fit">{product.sku}</span>
-                            </div>
                             <div class="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-1">
                                 <span class="text-[#333333] opacity-70 whitespace-nowrap">Détails / Colisage</span>
-                                <span class="font-medium text-[#333333] sm:text-right">{product.fullDesc}</span>
+                                <span class="font-medium text-[#333333] sm:text-right">{fullDesc}</span>
                             </div>
                         </div>
                     </div>
 
-                    <a href={`/contact?subject=Devis pour SKU: ${product.sku}`} class="bg-[#E86B21] text-white px-8 py-4 rounded-xl font-medium hover:bg-[#d15f1c] transition-colors flex items-center justify-center gap-3 group shadow-lg text-lg w-full sm:w-fit">
+                    <a href={`/contact?subject=Devis pour: ${product.name}`} class="bg-[#E86B21] text-white px-8 py-4 rounded-xl font-medium hover:bg-[#d15f1c] transition-colors flex items-center justify-center gap-3 group shadow-lg text-lg w-full sm:w-fit">
                         Demander un devis
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 group-hover:translate-x-1 transition-transform" viewBox="0 0 20 20" fill="currentColor">
                             <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />

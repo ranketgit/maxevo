@@ -2,6 +2,7 @@
 // src/pages/produits/[slug].astro
 import Layout from '../../layouts/Layout.astro';
 import Header from '../../components/Header.astro';
+import AddToCart from '../../components/AddToCart.jsx'; // <-- IMPORT DU COMPOSANT REACT
 
 export async function getStaticPaths() {
     const query = `
@@ -11,6 +12,7 @@ export async function getStaticPaths() {
             ... on Product {
               name
               slug
+              sku  # <-- Ajout du SKU pour que le panier puisse identifier le produit
               shortDescription(format: RAW)
               description(format: RAW)
               image {
@@ -58,6 +60,12 @@ const categoryName = product.productCategories?.nodes?.[0]?.name || "Général";
 const imageUrl = product.image?.sourceUrl || "/placeholder.jpg";
 const miniDesc = product.shortDescription || "";
 const fullDesc = product.description || "Détails non spécifiés";
+
+// On s'assure que le produit a un identifiant unique pour le store (fallback sur le slug si pas de SKU)
+const productForCart = {
+    ...product,
+    sku: product.sku || product.slug 
+};
 ---
 
 <Layout title={`${product.name} | MAXEVO PACKAGING`} description={miniDesc}>
@@ -102,17 +110,12 @@ const fullDesc = product.description || "Détails non spécifiés";
                         <div class="flex flex-col gap-4">
                             <div class="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-1">
                                 <span class="text-[#333333] opacity-70 whitespace-nowrap">Détails / Colisage</span>
-                                <span class="font-medium text-[#333333] sm:text-right">{fullDesc}</span>
+                                <span class="font-medium text-[#333333] sm:text-right" set:html={fullDesc}></span>
                             </div>
                         </div>
                     </div>
 
-                    <a href={`/contact?subject=Devis pour: ${product.name}`} class="bg-[#E86B21] text-white px-8 py-4 rounded-xl font-medium hover:bg-[#d15f1c] transition-colors flex items-center justify-center gap-3 group shadow-lg text-lg w-full sm:w-fit">
-                        Demander un devis
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 group-hover:translate-x-1 transition-transform" viewBox="0 0 20 20" fill="currentColor">
-                            <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
-                        </svg>
-                    </a>
+                    <AddToCart client:load product={productForCart} />
                     
                 </div>
             </div>

@@ -1,6 +1,9 @@
 ---
 // src/components/Header.astro
 
+// Detect if we are on the homepage
+const isHome = Astro.url.pathname === '/' || Astro.url.pathname === '/index.html';
+
 const sectors = [
     {
         name: "Café / Restaurant",
@@ -35,7 +38,7 @@ const sectors = [
 ];
 ---
 
-<header id="main-header" class="fixed top-0 w-full z-50 transition-all duration-300 bg-transparent border-b border-transparent">
+<header id="main-header" data-is-home={isHome.toString()} class={`fixed top-0 w-full z-50 transition-all duration-300 bg-transparent border-b border-transparent ${!isHome ? 'scrolled' : ''}`}>
     <div class="container mx-auto px-4 md:px-8 max-w-7xl h-20 flex items-center justify-between">
         
         <a href="/" class="flex items-center group">
@@ -70,17 +73,35 @@ const sectors = [
             <a href="/a-propos" class="nav-link text-white hover:text-[#E86B21] text-sm font-medium transition-colors duration-300">À propos</a>
         </nav>
 
-        <div class="hidden md:flex items-center">
+        <div class="hidden md:flex items-center gap-6">
+            <a href="/devis" class="cart-icon relative text-white hover:text-[#E86B21] transition-colors flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                </svg>
+                <span class="cart-badge absolute -top-2 -right-2 bg-[#E86B21] text-white text-[10px] font-bold rounded-full h-4 w-4 flex items-center justify-center hidden">
+                    0
+                </span>
+            </a>
             <a href="/contact" class="bg-[#E86B21] text-white px-6 py-2.5 rounded-lg text-sm font-medium hover:bg-[#d15f1c] transition-colors shadow-md">
                 Contact
             </a>
         </div>
 
-        <button id="mobile-menu-btn" class="mobile-btn md:hidden text-white p-2 focus:outline-none transition-colors duration-300" aria-label="Toggle Menu">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-            </svg>
-        </button>
+        <div class="flex items-center gap-4 md:hidden">
+            <a href="/devis" class="cart-icon relative text-white hover:text-[#E86B21] transition-colors flex items-center p-2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                </svg>
+                <span class="cart-badge absolute 0 right-0 bg-[#E86B21] text-white text-[10px] font-bold rounded-full h-4 w-4 flex items-center justify-center hidden">
+                    0
+                </span>
+            </a>
+            <button id="mobile-menu-btn" class="mobile-btn text-white p-2 focus:outline-none transition-colors duration-300" aria-label="Toggle Menu">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+            </button>
+        </div>
     </div>
 
     <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-gray-100 absolute w-full left-0 top-20 shadow-2xl h-[calc(100vh-80px)] overflow-y-auto">
@@ -130,11 +151,13 @@ const sectors = [
         border-bottom-color: #f3f4f6;
     }
 
-    #main-header.scrolled .nav-link {
+    #main-header.scrolled .nav-link,
+    #main-header.scrolled .cart-icon {
         color: rgba(51, 51, 51, 0.8);
     }
 
-    #main-header.scrolled .nav-link:hover {
+    #main-header.scrolled .nav-link:hover,
+    #main-header.scrolled .cart-icon:hover {
         color: #13522B;
     }
 
@@ -149,12 +172,22 @@ const sectors = [
         const btn = document.getElementById('mobile-menu-btn');
         const menu = document.getElementById('mobile-menu');
         
+        // Check if we are on the homepage based on the data attribute
+        const isHome = header?.getAttribute('data-is-home') === 'true';
+        
         // Mobile Secteurs Dropdown logic
         const secteursBtn = document.getElementById('mobile-secteurs-btn');
         const secteursMenu = document.getElementById('mobile-secteurs-menu');
         const secteursIcon = document.getElementById('mobile-secteurs-icon');
 
         const handleScroll = () => {
+            // If we are NOT on the homepage, keep it scrolled permanently
+            if (!isHome) {
+                header?.classList.add('scrolled');
+                return;
+            }
+
+            // Normal homepage logic
             if (window.scrollY > 50) {
                 header?.classList.add('scrolled');
             } else {
@@ -165,7 +198,7 @@ const sectors = [
         };
 
         window.addEventListener('scroll', handleScroll);
-        handleScroll();
+        handleScroll(); // Trigger on load
 
         // Toggle main mobile menu
         if (btn && menu) {
@@ -188,7 +221,7 @@ const sectors = [
 
             // Close menu if clicked outside
             document.addEventListener('click', (e) => {
-                const target = e.target as Node;
+                const target = e.target;
                 if (!menu.classList.contains('hidden') && !menu.contains(target) && !btn.contains(target)) {
                     menu.classList.add('hidden');
                     document.body.style.overflow = 'auto'; // Unlock scroll
@@ -208,5 +241,26 @@ const sectors = [
                 secteursIcon.classList.toggle('rotate-180');
             });
         }
+    });
+</script>
+
+<script>
+    import { cart } from '../store/cart.js';
+
+    // This listens to the global cart and updates all badges dynamically
+    cart.subscribe((items) => {
+        const badges = document.querySelectorAll('.cart-badge');
+        
+        // FIX: Count unique products, not total quantity
+        const uniqueProductsCount = items.length;
+        
+        badges.forEach(badge => {
+            if (uniqueProductsCount > 0) {
+                badge.textContent = uniqueProductsCount;
+                badge.classList.remove('hidden');
+            } else {
+                badge.classList.add('hidden');
+            }
+        });
     });
 </script>

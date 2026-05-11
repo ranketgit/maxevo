@@ -40,6 +40,21 @@ const {
 		<main class="flex-grow">
 			<Header />
 			<slot />
+			<a 
+    href="https://wa.me/212600000000?text=Bonjour,%20je%20souhaite%20avoir%20plus%20d'informations." 
+    target="_blank" 
+    rel="noopener noreferrer"
+    class="fixed bottom-6 right-6 md:bottom-8 md:right-8 z-[9999] bg-[#25D366] text-white p-3 md:p-4 rounded-full shadow-2xl hover:bg-[#20bd5a] hover:-translate-y-1 hover:scale-110 transition-all duration-300 flex items-center justify-center group focus:outline-none focus:ring-4 focus:ring-green-300"
+    aria-label="Contactez-nous sur WhatsApp"
+>
+    <span class="absolute right-full mr-4 bg-white text-[#333333] text-sm font-medium px-4 py-2 rounded-xl shadow-lg opacity-0 group-hover:opacity-100 transition-all duration-300 whitespace-nowrap pointer-events-none translate-x-2 group-hover:translate-x-0 hidden md:block border border-gray-100">
+        Besoin d'un devis ?
+    </span>
+
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 md:h-10 md:w-10" fill="currentColor" viewBox="0 0 24 24">
+        <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 1.928 6.541l-1.378 5.044 5.161-1.353A11.947 11.947 0 0 0 11.944 24c6.626 0 12-5.373 12-12S18.57 0 11.944 0zm6.056 17.15c-.276.776-1.583 1.488-2.19 1.554-.539.06-1.25.138-3.953-.984-3.265-1.354-5.361-4.665-5.522-4.88-.162-.216-1.32-1.758-1.32-3.351s.828-2.38 1.127-2.695c.27-.282.646-.356.86-.356.216 0 .43.003.618.012.222.012.518-.084.81.624.312.756 1.062 2.592 1.158 2.784.096.192.162.42.024.696-.132.276-.204.45-.402.678-.198.228-.414.504-.594.696-.198.21-.408.438-.174.84.234.402 1.044 1.722 2.238 2.784 1.542 1.374 2.82 1.794 3.228 1.992.408.198.648.168.894-.12.246-.288 1.062-1.236 1.35-1.662.288-.426.576-.354.948-.216.372.138 2.352 1.11 2.754 1.314.402.204.672.306.768.48.096.174.096 1.014-.18 1.79z"/>
+    </svg>
+</a>
 			<Footer />
 		</main>
 	</body>

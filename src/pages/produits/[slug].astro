@@ -2,7 +2,9 @@
 // src/pages/produits/[slug].astro
 import Layout from '../../layouts/Layout.astro';
 import Header from '../../components/Header.astro';
-import AddToCart from '../../components/AddToCart.jsx'; // <-- IMPORT DU COMPOSANT REACT
+import AddToCart from '../../components/AddToCart.jsx';
+
+export const prerender = true;
 
 export async function getStaticPaths() {
     const query = `

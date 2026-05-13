@@ -112,7 +112,7 @@ export const server = {
       // Envoyer l'email
       const { data, error } = await resend.emails.send({
         from: 'Maxevo Packaging <contact@maxevopackaging.ma>',
-        to: ['v5agencymarketing@gmail.com'],
+        to: ['maxevopackaging@gmail.com'],
         subject: `Nouveau devis web - ${nom}`,
         html: htmlContent,
       });

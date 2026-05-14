@@ -3,85 +3,112 @@
 import Layout from '../../layouts/Layout.astro';
 import Header from '../../components/Header.astro';
 
-export async function getStaticPaths() {
-    // FIXED: Added hideEmpty: false so Astro builds pages even for empty categories
-    const query = `
-      query GetAllData {
-        productCategories(first: 50, where: { hideEmpty: false }) {
-          nodes {
-            name
-            slug
+const { slug } = Astro.params;
+
+// Query updated to support pagination variables ($first, $after)
+const query = `
+  query GetAllData($first: Int!, $after: String) {
+    productCategories(first: 50, where: { hideEmpty: false }) {
+      nodes {
+        name
+        slug
+      }
+    }
+    products(first: $first, after: $after) {
+      pageInfo {
+        hasNextPage
+        endCursor
+      }
+      nodes {
+        ... on Product {
+          name
+          slug
+          shortDescription(format: RAW)
+          image {
+            sourceUrl
           }
-        }
-        products(first: 100) {
-          nodes {
-            ... on Product {
+          productCategories {
+            nodes {
               name
               slug
-              shortDescription(format: RAW)
-              image {
-                sourceUrl
-              }
-              productCategories {
-                nodes {
-                  name
-                  slug
-                }
-              }
             }
           }
         }
       }
-    `;
+    }
+  }
+`;
 
-    let categories = [];
-    let allProducts = [];
+let allCategories = [];
+let allProducts = [];
+let hasNextPage = true;
+let endCursor = null;
 
-    try {
+try {
+    // Keep fetching until WordPress says there are no more products
+    while (hasNextPage) {
         const response = await fetch("https://admin.maxevopackaging.ma/graphql", {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ query }),
+            body: JSON.stringify({ 
+                query,
+                variables: {
+                    first: 100,
+                    after: endCursor
+                }
+            }),
         });
         
         const json = await response.json();
-        categories = json.data?.productCategories?.nodes || [];
-        allProducts = json.data?.products?.nodes || [];
-    } catch (error) {
-        console.error("Erreur GraphQL getStaticPaths:", error);
+        
+        // We only need to set categories on the first loop
+        if (!endCursor) {
+            allCategories = json.data?.productCategories?.nodes || [];
+        }
+
+        // Add the new batch to our master product list
+        const newProducts = json.data?.products?.nodes || [];
+        allProducts = [...allProducts, ...newProducts];
+
+        // Update pagination trackers for the next loop
+        hasNextPage = json.data?.products?.pageInfo?.hasNextPage || false;
+        endCursor = json.data?.products?.pageInfo?.endCursor || null;
     }
-
-    return categories
-        .filter(category => category.slug && category.slug !== 'uncategorized')
-        .map((category) => {
-            // This filters the products perfectly based on the JSON you just showed me
-            const categoryProducts = allProducts.filter((product) => {
-                const productCats = product.productCategories?.nodes || [];
-                return productCats.some(cat => cat.slug === category.slug);
-            });
-
-            return {
-                params: { slug: category.slug },
-                props: { category, products: categoryProducts },
-            };
-    });
+} catch (error) {
+    console.error("Erreur GraphQL SSR Secteurs:", error);
 }
 
-const { category = {}, products = [] } = Astro.props;
+// FIX 1: THE 404 ERROR (Matches hotel to hôtel, e-commerce to ecommerce, etc.)
+const category = allCategories.find(c => 
+    c.slug === slug || 
+    c.slug.replace(/-/g, '') === slug.replace(/-/g, '')
+);
 
+if (!category) {
+    return Astro.redirect('/404');
+}
+
+// FIX 2: THE "ALL PRODUCTS" ERROR (Manual filtering from the master list)
+const products = allProducts.filter((product) => {
+    const productCats = product.productCategories?.nodes || [];
+    return productCats.some(cat => cat.slug === category.slug);
+});
+
+// Sector icons updated with the new Hôtel SVG
 const sectorIcons = {
     "cafe-restaurant": '<path d="M20 24h20v14c0 5.5-4.5 10-10 10s-10-4.5-10-10V24z"/><path d="M40 28h4c3.3 0 6 2.7 6 6s-2.7 6-6 6h-4"/><path d="M12 52h36"/>',
     "ecologique": '<path d="M32 12C20 12 12 20 12 32c0 16 20 20 20 20s20-4 20-20c0-12-8-20-20-20z"/><path d="M32 52V24"/><path d="M32 36l8-8"/>',
     "boulangerie": '<rect x="22" y="12" width="20" height="40" rx="8"/><path d="M22 24c4-2 10 2 20-2"/><path d="M22 34c4-2 10 2 20-2"/><path d="M22 44c4-2 10 2 20-2"/><circle cx="28" cy="18" r="1.5"/>',
-    "e-commerce": '<path d="M14 20l6 24h24l6-24H14z"/><path d="M24 20v-4c0-4.4 3.6-8 8-8s8 3.6 8 8v4"/>',
+    "hotel": '<path d="M16 52V12a4 4 0 014-4h24a4 4 0 014 4v40"/><path d="M12 52h40"/><path d="M28 52V40a4 4 0 018 0v12"/><rect x="24" y="18" width="5" height="5"/><rect x="35" y="18" width="5" height="5"/><rect x="24" y="28" width="5" height="5"/><rect x="35" y="28" width="5" height="5"/>',
     "street-food": '<path d="M12 36c0-12 8-20 20-20s20 8 20 20H12z"/><path d="M14 36v12c0 4 4 6 18 6s18-2 18-6V36"/><path d="M20 44h24v6H20z"/><circle cx="26" cy="24" r="1.5"/><circle cx="36" cy="22" r="1.5"/><circle cx="44" cy="30" r="1.5"/><circle cx="30" cy="32" r="1.5"/><path d="M54 36v16l2 2"/>',
     "boissons": '<path d="M22 24l2 24h16l2-24H22z"/><path d="M18 24h28"/><path d="M32 24V10l8-8"/>'
 };
 
-const currentIcon = sectorIcons[category.slug] || '<circle cx="32" cy="32" r="20" fill="none" stroke="currentColor" stroke-width="2.5"/>';
+// Ensure the icon loads even if there is a hyphen mismatch
+const currentIcon = sectorIcons[category.slug] || sectorIcons[slug] || '<circle cx="32" cy="32" r="20" fill="none" stroke="currentColor" stroke-width="2.5"/>';
 ---
 
-<Layout title={`${category.name || 'Secteur'} | MAXEVO PACKAGING`} description={`Découvrez nos solutions d'emballage.`}>
+<Layout title={`${category.name || 'Secteur'} | MAXEVO PACKAGING`} description={`Découvrez nos solutions d'emballage pour ${category.name}.`}>
     <Header />
     
     <section class="pt-32 pb-16 md:pt-40 md:pb-24 bg-[#F9F9F9] w-full min-h-screen">

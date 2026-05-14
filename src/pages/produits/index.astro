@@ -1,0 +1,113 @@
+---
+// src/pages/produits/index.astro
+import Layout from '../../layouts/Layout.astro';
+import Header from '../../components/Header.astro';
+import ProductCatalog from '../../components/ProductCatalog.jsx';
+
+// We add variables ($first, $after) and pageInfo to handle the pagination
+const query = `
+  query GetAllCatalogData($first: Int!, $after: String) {
+    productCategories(first: 50, where: { hideEmpty: true }) {
+      nodes {
+        name
+        slug
+      }
+    }
+    products(first: $first, after: $after) {
+      pageInfo {
+        hasNextPage
+        endCursor
+      }
+      nodes {
+        ... on Product {
+          name
+          slug
+          shortDescription(format: RAW)
+          image {
+            sourceUrl
+          }
+          productCategories {
+            nodes {
+              name
+              slug
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+
+let categories = [];
+let allProducts = [];
+let hasNextPage = true;
+let endCursor = null;
+
+try {
+    // Keep fetching as long as WordPress says there is a next page
+    while (hasNextPage) {
+        const response = await fetch("https://admin.maxevopackaging.ma/graphql", {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ 
+                query,
+                variables: { 
+                    first: 100, 
+                    after: endCursor 
+                }
+            }),
+        });
+        
+        const json = await response.json();
+        
+        // We only need to grab the categories on the very first loop
+        if (!endCursor) {
+            categories = (json.data?.productCategories?.nodes || []).filter(c => c.slug !== 'uncategorized');
+        }
+
+        // Add the new batch of products to our master list
+        const newProducts = json.data?.products?.nodes || [];
+        allProducts = [...allProducts, ...newProducts];
+
+        // Update pagination variables for the next loop
+        hasNextPage = json.data?.products?.pageInfo?.hasNextPage || false;
+        endCursor = json.data?.products?.pageInfo?.endCursor || null;
+    }
+} catch (error) {
+    console.error("Erreur GraphQL Pagination:", error);
+}
+---
+
+<Layout title="Catalogue Produits | MAXEVO PACKAGING" description="Découvrez l'ensemble de notre gamme d'emballages professionnels.">
+    <Header />
+    
+    <main class="pt-32 pb-16 md:pt-40 md:pb-24 bg-[#F9F9F9] w-full min-h-screen">
+        <div class="container mx-auto px-4 md:px-8 max-w-7xl">
+            
+            {/* Breadcrumbs */}
+            <div class="flex items-center gap-2 text-sm text-[#333333] opacity-60 mb-8">
+                <a href="/" class="hover:text-[#13522B] transition-colors">Accueil</a>
+                <span>/</span>
+                <span class="font-medium opacity-100">Produits</span>
+            </div>
+
+            {/* Page Header */}
+            <div class="mb-12">
+                <h1 class="text-4xl md:text-5xl font-black text-[#333333] tracking-tight mb-4">
+                    Catalogue Produits
+                </h1>
+                <p class="text-lg text-[#333333] opacity-70 max-w-2xl">
+                    Explorez notre sélection complète d'emballages conçus pour sublimer vos produits et répondre aux exigences de votre secteur.
+                </p>
+            </div>
+
+            {/* The React Interactive Catalog */}
+            <ProductCatalog 
+                client:load 
+                initialProducts={allProducts} 
+                categories={categories} 
+            />
+
+        </div>
+    </main>
+</Layout>

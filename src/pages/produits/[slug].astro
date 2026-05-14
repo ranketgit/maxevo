@@ -4,13 +4,8 @@ import Layout from '../../layouts/Layout.astro';
 import Header from '../../components/Header.astro';
 import AddToCart from '../../components/AddToCart.jsx';
 
-// 1. REMOVE 'prerender = true'
-// 2. REMOVE 'getStaticPaths' entirely
-
-// 3. Get the slug directly from the URL params
 const { slug } = Astro.params;
 
-// 4. Fetch ONLY this specific product by its slug
 const query = `
   query GetProductBySlug($id: ID!) {
     product(id: $id, idType: SLUG) {

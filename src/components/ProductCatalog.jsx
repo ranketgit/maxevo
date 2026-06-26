@@ -20,7 +20,7 @@ export default function ProductCatalog({ initialProducts, categories }) {
         <div className="flex flex-col lg:flex-row gap-8 items-start">
             
             {/* LEFT SIDEBAR: FILTERS */}
-            <aside className="w-full lg:w-1/4 flex flex-col gap-6 sticky top-28">
+            <aside className="w-full lg:w-1/4 flex flex-col gap-6 lg:sticky lg:top-28">
                 
                 {/* Search Bar */}
                 <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">

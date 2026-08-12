@@ -94,17 +94,18 @@ const products = allProducts.filter((product) => {
     return productCats.some(cat => cat.slug === category.slug);
 });
 
-// Sector icons updated with the new Hôtel SVG
+// Sector icons updated with the new Hôtel SVG and Boucherie SVG
 const sectorIcons = {
     "cafe-restaurant": '<path d="M20 24h20v14c0 5.5-4.5 10-10 10s-10-4.5-10-10V24z"/><path d="M40 28h4c3.3 0 6 2.7 6 6s-2.7 6-6 6h-4"/><path d="M12 52h36"/>',
     "ecologique": '<path d="M32 12C20 12 12 20 12 32c0 16 20 20 20 20s20-4 20-20c0-12-8-20-20-20z"/><path d="M32 52V24"/><path d="M32 36l8-8"/>',
     "boulangerie": '<rect x="22" y="12" width="20" height="40" rx="8"/><path d="M22 24c4-2 10 2 20-2"/><path d="M22 34c4-2 10 2 20-2"/><path d="M22 44c4-2 10 2 20-2"/><circle cx="28" cy="18" r="1.5"/>',
     "hotel": '<path d="M16 52V12a4 4 0 014-4h24a4 4 0 014 4v40"/><path d="M12 52h40"/><path d="M28 52V40a4 4 0 018 0v12"/><rect x="24" y="18" width="5" height="5"/><rect x="35" y="18" width="5" height="5"/><rect x="24" y="28" width="5" height="5"/><rect x="35" y="28" width="5" height="5"/>',
     "street-food": '<path d="M12 36c0-12 8-20 20-20s20 8 20 20H12z"/><path d="M14 36v12c0 4 4 6 18 6s18-2 18-6V36"/><path d="M20 44h24v6H20z"/><circle cx="26" cy="24" r="1.5"/><circle cx="36" cy="22" r="1.5"/><circle cx="44" cy="30" r="1.5"/><circle cx="30" cy="32" r="1.5"/><path d="M54 36v16l2 2"/>',
-    "boissons": '<path d="M22 24l2 24h16l2-24H22z"/><path d="M18 24h28"/><path d="M32 24V10l8-8"/>'
+    "boissons": '<path d="M22 24l2 24h16l2-24H22z"/><path d="M18 24h28"/><path d="M32 24V10l8-8"/>',
+    "boucherie": '<path d="M14 16h24c3 0 6 3 6 6v10H14V16z"/><path d="M20 32v18"/><circle cx="28" cy="23" r="2.5"/><path d="M44 22l6-4"/>'
 };
 
-// Ensure the icon loads even if there is a hyphen mismatch
+// Ensure the icon loads even if there is a mismatch
 const currentIcon = sectorIcons[category.slug] || sectorIcons[slug] || '<circle cx="32" cy="32" r="20" fill="none" stroke="currentColor" stroke-width="2.5"/>';
 ---
 

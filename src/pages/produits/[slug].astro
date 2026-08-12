@@ -9,6 +9,7 @@ const { slug } = Astro.params;
 const query = `
   query GetProductBySlug($id: ID!) {
     product(id: $id, idType: SLUG) {
+      databaseId
       name
       slug
       sku
@@ -44,7 +45,7 @@ try {
     console.error("Erreur GraphQL SSR:", error);
 }
 
-// 5. If WordPress doesn't find the product, return a 404 immediately
+// If WordPress doesn't find the product, return a 404 immediately
 if (!product) {
     return Astro.redirect('/404');
 }
@@ -55,9 +56,13 @@ const imageUrl = product.image?.sourceUrl || "/placeholder.jpg";
 const miniDesc = product.shortDescription || "";
 const fullDesc = product.description || "Détails non spécifiés";
 
+// CRITICAL FIX: Explicitly packaging the databaseId into the cart object
 const productForCart = {
-    ...product,
-    sku: product.sku || product.slug 
+    name: product.name,
+    slug: product.slug,
+    sku: product.sku || product.slug,
+    databaseId: product.databaseId, // <--- This guarantees the ID gets sent to the cart
+    image: imageUrl
 };
 ---
 

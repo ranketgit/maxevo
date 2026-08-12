@@ -50,15 +50,25 @@ try {
                     Nos produits populaires 
                 </h2>
                 <p class="text-[#333333] opacity-60 font-light text-lg">
-                    Glissez pour découvrir nos solutions.
+                    Découvrez nos solutions.
                 </p>
+            </div>
+            
+            <!-- Navigation Arrows -->
+            <div class="flex items-center gap-3">
+                <button id="slider-prev" class="w-12 h-12 flex items-center justify-center rounded-full border border-gray-200 bg-white text-[#333333] hover:border-[#E86B21] hover:text-[#E86B21] transition-colors focus:outline-none" aria-label="Produit précédent">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+                </button>
+                <button id="slider-next" class="w-12 h-12 flex items-center justify-center rounded-full border border-gray-200 bg-white text-[#333333] hover:border-[#E86B21] hover:text-[#E86B21] transition-colors focus:outline-none" aria-label="Produit suivant">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+                </button>
             </div>
         </div>
 
         <div class="relative w-full">
             <div 
                 id="product-slider" 
-                class="flex gap-6 overflow-x-auto hide-scrollbar snap-x snap-mandatory cursor-grab active:cursor-grabbing pb-8"
+                class="flex gap-6 overflow-x-auto hide-scrollbar snap-x snap-mandatory pb-8 scroll-smooth"
             >
                 {products.length > 0 ? products.map((product: any) => {
                     const categoryName = product.productCategories?.nodes?.[0]?.name || "Général";
@@ -66,20 +76,29 @@ try {
                     const desc = product.shortDescription || "";
 
                     return (
-                        <a href={`/produits/${product.slug}`} class="product-card block shrink-0 w-[280px] sm:w-[320px] snap-start select-none group focus:outline-none">
-                            <div class="w-full aspect-[4/5] bg-[#F9F9F9] rounded-xl mb-4 overflow-hidden border border-gray-100 transition-colors pointer-events-none">
-                                <img 
-                                    src={imageUrl} 
-                                    alt={product.name} 
-                                    class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                                    loading="lazy"
-                                />
-                            </div>
-                            <span class="text-xs text-[#333333] opacity-50 uppercase tracking-widest mb-1 block">{categoryName}</span>
-                            <h3 class="text-xl font-normal text-[#333333] mb-1 group-hover:text-[#E86B21] transition-colors">{product.name}</h3>
-                            <p class="text-sm font-light text-[#333333] opacity-60 line-clamp-2">{desc}</p>
-                        </a>
-                    )
+    <a 
+        href={`/produits/${product.slug}`} 
+        class="product-card block shrink-0 w-[280px] sm:w-[320px] snap-start select-none group focus:outline-none p-4 rounded-2xl border border-transparent hover:border-gray-100 hover:bg-gray-50 hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
+    >
+        <div class="w-full aspect-[4/5] bg-[#F9F9F9] rounded-xl mb-4 overflow-hidden border border-gray-100 transition-colors pointer-events-none group-hover:border-gray-200">
+            <img 
+                src={imageUrl} 
+                alt={product.name} 
+                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
+                loading="lazy"
+            />
+        </div>
+        <span class="text-xs text-[#333333] opacity-50 uppercase tracking-widest mb-1 block group-hover:opacity-70 transition-opacity">
+            {categoryName}
+        </span>
+        <h3 class="text-xl font-normal text-[#333333] mb-1 group-hover:text-[#E86B21] transition-colors">
+            {product.name}
+        </h3>
+        <p class="text-sm font-light text-[#333333] opacity-60 line-clamp-2 group-hover:opacity-80 transition-opacity">
+            {desc}
+        </p>
+    </a>
+)
                 }) : (
                     <div class="text-[#333333] opacity-60">Aucun produit trouvé. Vérifiez la connexion GraphQL.</div>
                 )}
@@ -102,71 +121,23 @@ try {
 <script>
     document.addEventListener('DOMContentLoaded', () => {
         const slider = document.getElementById('product-slider');
-        if (!slider) return;
+        const btnPrev = document.getElementById('slider-prev');
+        const btnNext = document.getElementById('slider-next');
+        
+        if (!slider || !btnPrev || !btnNext) return;
 
-        let isDown = false;
-        let startX: number;
-        let scrollLeft: number;
-        let autoPlayInterval: number;
-        let isDragging = false; 
-
-        const stopAutoPlay = () => {
-            if (autoPlayInterval) clearInterval(autoPlayInterval);
+        const getScrollAmount = () => {
+            const card = slider.querySelector('.product-card') as HTMLElement;
+            // Target the width of the card plus the gap between them (Tailwind gap-6 = 24px)
+            return card ? card.offsetWidth + 24 : 300;
         };
 
-        const startAutoPlay = () => {
-            stopAutoPlay(); 
-            autoPlayInterval = window.setInterval(() => {
-                const card = slider.querySelector('.product-card') as HTMLElement;
-                const cardWidth = card ? card.offsetWidth + 24 : 300; 
-                
-                if (slider.scrollLeft >= (slider.scrollWidth - slider.clientWidth - 10)) {
-                    slider.scrollTo({ left: 0, behavior: 'smooth' });
-                } else {
-                    slider.scrollBy({ left: cardWidth, behavior: 'smooth' });
-                }
-            }, 3000);
-        };
-
-        slider.addEventListener('mousedown', (e) => {
-            isDown = true;
-            isDragging = false;
-            startX = e.pageX - slider.offsetLeft;
-            scrollLeft = slider.scrollLeft;
-            stopAutoPlay();
+        btnNext.addEventListener('click', () => {
+            slider.scrollBy({ left: getScrollAmount(), behavior: 'smooth' });
         });
 
-        slider.addEventListener('mouseleave', () => {
-            isDown = false;
-            startAutoPlay();
+        btnPrev.addEventListener('click', () => {
+            slider.scrollBy({ left: -getScrollAmount(), behavior: 'smooth' });
         });
-
-        slider.addEventListener('mouseup', () => {
-            isDown = false;
-            startAutoPlay();
-        });
-
-        slider.addEventListener('mousemove', (e) => {
-            if (!isDown) return;
-            e.preventDefault();
-            isDragging = true;
-            const x = e.pageX - slider.offsetLeft;
-            const walk = (x - startX) * 2; 
-            slider.scrollLeft = scrollLeft - walk;
-        });
-
-        const links = slider.querySelectorAll('a.product-card');
-        links.forEach(link => {
-            link.addEventListener('click', (e) => {
-                if (isDragging) {
-                    e.preventDefault();
-                }
-            });
-        });
-
-        slider.addEventListener('touchstart', stopAutoPlay, { passive: true });
-        slider.addEventListener('touchend', startAutoPlay);
-
-        startAutoPlay();
     });
 </script>

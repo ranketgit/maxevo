@@ -8,6 +8,9 @@ const query = `
         ... on Product {
           name
           slug
+          ... on ProductWithPricing {
+            price
+          }
           shortDescription(format: RAW)
           image {
             sourceUrl
@@ -78,9 +81,9 @@ try {
                     return (
     <a 
         href={`/produits/${product.slug}`} 
-        class="product-card block shrink-0 w-[280px] sm:w-[320px] snap-start select-none group focus:outline-none p-4 rounded-2xl border border-transparent hover:border-gray-100 hover:bg-gray-50 hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
+        class="product-card flex flex-col shrink-0 w-[280px] sm:w-[320px] snap-start select-none group focus:outline-none p-4 rounded-2xl border border-transparent hover:border-gray-100 hover:bg-gray-50 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 h-full min-h-[400px]"
     >
-        <div class="w-full aspect-[4/5] bg-[#F9F9F9] rounded-xl mb-4 overflow-hidden border border-gray-100 transition-colors pointer-events-none group-hover:border-gray-200">
+        <div class="w-full aspect-[4/5] bg-[#F9F9F9] rounded-xl mb-4 overflow-hidden border border-gray-100 transition-colors pointer-events-none group-hover:border-gray-200 shrink-0">
             <img 
                 src={imageUrl} 
                 alt={product.name} 
@@ -94,9 +97,12 @@ try {
         <h3 class="text-xl font-normal text-[#333333] mb-1 group-hover:text-[#E86B21] transition-colors">
             {product.name}
         </h3>
-        <p class="text-sm font-light text-[#333333] opacity-60 line-clamp-2 group-hover:opacity-80 transition-opacity">
+        <p class="text-sm font-light text-[#333333] opacity-60 line-clamp-2 group-hover:opacity-80 transition-opacity mb-4">
             {desc}
         </p>
+        <div class="mt-auto pt-4 border-t border-gray-100">
+            <span class="font-bold text-[#E86B21] text-lg" set:html={product.price || ''}></span>
+        </div>
     </a>
 )
                 }) : (

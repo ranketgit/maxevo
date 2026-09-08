@@ -49,7 +49,10 @@ export default function CheckoutForm() {
                             <img src={item.image?.sourceUrl || item.image || "/placeholder.jpg"} alt={item.name} className="w-16 h-16 object-cover rounded bg-gray-50" />
                             <div className="flex-1">
                                 <h3 className="font-bold text-[#333333] text-sm md:text-base">{item.name}</h3>
-                                <p className="text-xs text-gray-500">Ref: {item.sku}</p>
+                                <p className="text-xs text-gray-500 mb-1">Ref: {item.sku}</p>
+                                {item.price && (
+                                    <span className="font-bold text-[#E86B21] text-sm" dangerouslySetInnerHTML={{ __html: item.price }}></span>
+                                )}
                             </div>
                             <div className="text-sm font-bold bg-gray-100 px-3 py-1 rounded">
                                 Qté: {item.qty}

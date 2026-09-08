@@ -109,8 +109,8 @@ export default function ProductCatalog({ initialProducts, categories }) {
                             const desc = product.shortDescription || "";
 
                             return (
-                                <a key={product.slug} href={`/produits/${product.slug}`} className="bg-white p-4 rounded-[1.5rem] shadow-sm hover:shadow-xl border border-gray-100 transition-all duration-300 group focus:outline-none flex flex-col h-full">
-                                    <div className="w-full aspect-square bg-[#F9F9F9] rounded-xl mb-5 overflow-hidden transition-colors pointer-events-none p-4 flex items-center justify-center">
+                                <a key={product.slug} href={`/produits/${product.slug}`} className="bg-white p-4 rounded-[1.5rem] shadow-sm hover:shadow-xl border border-gray-100 transition-all duration-300 group focus:outline-none flex flex-col h-full min-h-[400px]">
+                                    <div className="w-full aspect-square bg-[#F9F9F9] rounded-xl mb-5 overflow-hidden transition-colors pointer-events-none p-4 flex items-center justify-center shrink-0">
                                         <img 
                                             src={imageUrl} 
                                             alt={product.name} 
@@ -120,7 +120,10 @@ export default function ProductCatalog({ initialProducts, categories }) {
                                     </div>
                                     <span className="text-xs text-[#13522B] font-bold uppercase tracking-widest mb-2 block">{primaryCategory}</span>
                                     <h3 className="text-xl font-bold text-[#333333] mb-2 group-hover:text-[#E86B21] transition-colors line-clamp-1">{product.name}</h3>
-                                    <div className="text-sm font-light text-[#333333] opacity-70 line-clamp-2 mt-auto" dangerouslySetInnerHTML={{ __html: desc }}></div>
+                                    <div className="text-sm font-light text-[#333333] opacity-70 line-clamp-2 mb-4" dangerouslySetInnerHTML={{ __html: desc }}></div>
+                                    <div className="mt-auto pt-4 border-t border-gray-100">
+                                        <span className="font-bold text-[#E86B21] text-lg" dangerouslySetInnerHTML={{ __html: product.price || '' }}></span>
+                                    </div>
                                 </a>
                             );
                         })}

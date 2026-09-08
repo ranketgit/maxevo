@@ -22,6 +22,9 @@ const query = `
         ... on Product {
           name
           slug
+          ... on ProductWithPricing {
+            price
+          }
           shortDescription(format: RAW)
           image {
             sourceUrl
